@@ -1,12 +1,13 @@
 import mongoose, { Mongoose } from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
+console.log('MongoDB URI:', MONGODB_URI); // Ensure this logs the correct URI
+
 
 if (!MONGODB_URI) {
     throw new Error('MONGODB_URI is missing');
 }
 
-// Define a cached global variable to hold the connection and promise
 let cached = (global as any).mongoose;
 
 if (!cached) {
@@ -19,9 +20,12 @@ export const connectToDatabase = async (): Promise<Mongoose> => {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI!, {
-            dbName: 'evently',
+        cached.promise = mongoose.connect(MONGODB_URI, {
+            dbName: 'event-bazaar',
             bufferCommands: false,
+        }).catch((error) => {
+            console.error('MongoDB connection error:', error);
+            throw new Error('Failed to connect to MongoDB');
         });
     }
 

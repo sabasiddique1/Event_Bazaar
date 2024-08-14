@@ -10,18 +10,33 @@ import { handleError } from '@/lib/utils'
 
 import { CreateUserParams, UpdateUserParams } from '@/types'
 
-export async function createUser(user: CreateUserParams) {
+export async function createUser(user: {
+    firstName: any;
+    lastName: any;
+    clerkId: string | undefined;
+    photo: any;
+    email: any;
+    username: any
+}) {
     try {
-        await connectToDatabase()
+        console.log('Connecting to database...');
+        await connectToDatabase();
+        console.log('Database connected successfully');
 
-        const newUser = await User.create(user)
-        return JSON.parse(JSON.stringify(newUser))
+        console.log('Inserting user:', user);
+        const newUser = await User.create(user);
+        console.log('User created:', newUser);
+
+        return JSON.parse(JSON.stringify(newUser));
     } catch (error) {
-        handleError(error)
+        console.error('Error creating user:', error);
+        handleError(error);
     }
 }
 
+console.log(user, 'user in user.action.js')
 export async function getUserById(userId: string) {
+    console.log(userId, 'user id in the user.actions.ts')
     try {
         await connectToDatabase()
 
@@ -34,7 +49,7 @@ export async function getUserById(userId: string) {
     }
 }
 
-export async function updateUser(clerkId: string, user: UpdateUserParams) {
+export async function updateUser(clerkId: string | undefined, user: UpdateUserParams) {
     try {
         await connectToDatabase()
 

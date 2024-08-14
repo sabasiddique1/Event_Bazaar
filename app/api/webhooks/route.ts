@@ -9,10 +9,11 @@ export async function POST(req: Request) {
 
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
+     console.log(WEBHOOK_SECRET, 'webhook secret key ')
 
     if (!WEBHOOK_SECRET) {
         throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
-    }
+     }
 
     // Get the headers
     const headerPayload = headers();
@@ -67,16 +68,23 @@ export async function POST(req: Request) {
         }
 
         const newUser = await createUser(user);
+        console.log(newUser, 'new user in webhooks file')
+        console.log(user, 'user in webhook file')
 
         if(newUser) {
-            await clerkClient.users.updateUserMetadata(id, {
-                publicMetadata: {
-                    userId: newUser._id
-                }
-            })
+            console.log(newUser, 'nwe user in route.ts')
+            if (id != null) {
+                console.log(newUser, 'new user in route.ts')
+                await clerkClient.users.updateUserMetadata(id, {
+                    publicMetadata: {
+                        userId: newUser._id
+                    }
+                })
+            }
         }
 
-        return NextResponse.json({ message: 'OK', user: newUser })
+
+        return NextResponse.json({ message: 'User created successfully', user: newUser })
     }
 
     if (eventType === 'user.updated') {
@@ -90,6 +98,7 @@ export async function POST(req: Request) {
         }
 
         const updatedUser = await updateUser(id, user)
+        console.log(updatedUser, 'updated user with id')
 
         return NextResponse.json({ message: 'OK', user: updatedUser })
     }

@@ -4,9 +4,10 @@ export default authMiddleware({
     publicRoutes: [
         '/',
         '/events/:id',
-        '/api/webhook/clerk',
-        '/api/webhook/stripe',
-        '/api/uploadthing'
+        '/api/webhooks/clerk',
+        '/api/webhooks/stripe',
+        '/api/uploadthing',
+        '/cart.json',
     ],
     ignoredRoutes: [
         '/api/webhook/clerk',
@@ -17,7 +18,7 @@ export default authMiddleware({
 
 export const config = {
     matcher: [
-        // Skip Next.js internals and all static files, unless found in search params
+        // Skip Next.js internals and all static  files, unless found in search params
         '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
         // Always run for API routes
         '/(api|trpc)(.*)',

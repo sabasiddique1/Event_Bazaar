@@ -1,0 +1,5 @@
+User connection to clear => mongodb save
+
+mongodb setup -- database - index.ts
+model creation -- database - user.model
+actions create -- lib - actions - user.actions.ts

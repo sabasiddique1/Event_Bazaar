@@ -1,7 +1,24 @@
 import Image from "next/image";
 import { Button } from '@/components/ui/button';
 import Link from "next/link";
-export default function Home() {
+import {auth} from "@clerk/nextjs";
+import { clerkClient } from '@clerk/nextjs'
+
+export default function Home () {
+    const { sessionClaims } = auth()
+
+    const userId = sessionClaims?.sub as string;
+    const responseAwait =  async () => {
+        const response = await clerkClient.users.getUser(userId);
+        console.log(response, 'response in page.tsx')
+    }
+    responseAwait()
+
+    console.log(sessionClaims, 'sessionclaims')
+
+    console.log(userId, 'user d in page')
+
+    //make query in mongo db for user existence
   return (
     <>
       <section className="bg-indigo-100 bg-dotted-pattern bg-contain py-5 md:py-10">
