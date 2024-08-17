@@ -10,8 +10,8 @@ export default authMiddleware({
         '/cart.json',
     ],
     ignoredRoutes: [
-        '/api/webhook/clerk',
-        '/api/webhook/stripe',
+        '/api/webhooks/clerk',
+        '/api/webhooks/stripe',
         '/api/uploadthing'
     ]
 });
